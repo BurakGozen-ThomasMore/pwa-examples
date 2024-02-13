@@ -6,6 +6,6 @@ self.addEventListener("activate", () => {
   console.log("[Service Worker] Activated");
 });
 
-self.addEventListener("fetch", (event) => {
-  console.log("[Service Worker] Fetch", event);
-});
+/**
+ * Maak nu zelf een listener voor de fetch event aan die een fetch event logt naar de console
+ */

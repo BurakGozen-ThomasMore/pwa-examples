@@ -2,7 +2,7 @@
 const CACHE_NAME = "static-cache";
 
 // URLs to be cached
-const urlsToCache = ["/favicon.ico", "https://jsonplaceholder.typicode.com/todos/1"];
+const urlsToCache = ["/favicon.ico"];
 
 /**
  * Event listener for the "install" event.

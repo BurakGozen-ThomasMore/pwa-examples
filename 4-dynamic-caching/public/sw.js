@@ -1,6 +1,10 @@
+/**
+ * Verander deze code zodanig dat de service worker dyanmisch caching toepast.
+ * De serice worker moet de nieuwe fetch request opslaan in de cache.
+ */
+
 // Name of the cache
-const STATIC_CACHE_NAME = "static-cache";
-const DYNAMIC_CACHE_NAME = "dynamic-cache";
+const CACHE_NAME = "static-cache";
 
 // URLs to be cached
 const urlsToCache = ["/favicon.ico"];
@@ -12,7 +16,7 @@ const urlsToCache = ["/favicon.ico"];
  */
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(STATIC_CACHE_NAME).then((cache) => {
+    caches.open(CACHE_NAME).then((cache) => {
       console.log("Opened cache");
       return cache.addAll(urlsToCache);
     })
@@ -29,12 +33,7 @@ self.addEventListener("fetch", (event) => {
   event.respondWith(
     caches.match(event.request).then((response) => {
       if (response) return response;
-      return fetch(event.request).then((response) => {
-        return caches.open(DYNAMIC_CACHE_NAME).then((cache) => {
-          cache.put(event.request.url, response.clone());
-          return response;
-        });
-      });
+      return fetch(event.request);
     })
   );
 });
@@ -49,7 +48,7 @@ self.addEventListener("activate", (event) => {
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames
-          .filter((cacheName) => cacheName !== STATIC_CACHE_NAME)
+          .filter((cacheName) => cacheName !== CACHE_NAME)
           .map((cacheName) => caches.delete(cacheName))
       );
     })
